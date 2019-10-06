@@ -1,0 +1,46 @@
+extends Node
+
+
+#======================================================================#
+#eq
+
+var last_container = null
+var last_pos = Vector2()
+var pos
+
+
+const SAVE_PATH = "user://save.json"
+
+func save_game():
+	# get all the save data from global nodes
+	var save_dict = {
+		"player": {
+			
+		"eq": {
+			"pos": pos,
+			"last_container": last_container,
+			"last_pos": last_pos
+		}
+	}
+	var save_file = File.new()
+	# create a file var save_file = File.new()
+	save_file.open(SAVE_PATH, File.WRITE)
+	# serialize the data dict to json
+	save_file.store_line(to_json(save_dict))
+	# write the json to the file and save the disk
+	save_file.close()
+
+func load_game():
+	# try to load a saved file
+	var save_file = File.new()
+	if not save_file.file_exists(SAVE_PATH):
+		return
+		# parse the file data
+	save_file.open(SAVE_PATH, File.READ)
+	var data = parse_json(save_file.get_as_text())
+	# rewrite the json file to have the saved variables
+	
+	
+	pos = data["eq"]["pos"]
+	last_container = data["eq"]["last_container"]
+	last_pos = data["eq"]["last_pos"]
